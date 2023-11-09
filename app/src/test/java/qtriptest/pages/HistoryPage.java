@@ -1,6 +1,7 @@
 
 package qtriptest.pages;
 
+import qtriptest.SeleniumWrapper;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -25,9 +26,10 @@ public class HistoryPage {
     }
 
     public void navigateToHistoryPage() throws InterruptedException{
-        if(!driver.getCurrentUrl().equals(url)){
-          driver.get(url);
-      }
+    //     if(!driver.getCurrentUrl().equals(url)){
+    //       driver.get(url);
+    //   }
+    SeleniumWrapper.navigate(driver, url);
     }
 
 
@@ -73,7 +75,8 @@ public class HistoryPage {
             System.out.println("current URL is:- " + driver.getCurrentUrl());
             WebElement btn = driver.findElement(By.xpath("//button[@class='cancel-button']"));
             System.out.println("Here button is :- "+btn.getText());
-            btn.click();
+            //btn.click();
+            SeleniumWrapper.click(btn);
             Thread.sleep(5000);
             //driver.navigate().refresh();
             //  if(!transaction_id.isDisplayed()){
@@ -96,15 +99,13 @@ public class HistoryPage {
         }
 
 
-        public void clickonReservation() throws InterruptedException{
+        public void clickonReservation() throws InterruptedException, MalformedURLException{
             Thread.sleep(2000);
             System.out.println("---------->" +Reservation);
-            Reservation.click() ;
+            //Reservation.click();
+            SeleniumWrapper.click(Reservation);
             Thread.sleep(2000);
         // SeleniumWrapper.click(HomeBtn) ;
     }
-
-
-
     
 }

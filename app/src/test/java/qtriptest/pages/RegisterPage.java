@@ -1,5 +1,6 @@
 package qtriptest.pages;
 
+import qtriptest.SeleniumWrapper;
 import java.util.UUID;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -34,10 +35,11 @@ public class RegisterPage {
     }
 
     public void navigateToRegisterPage(){
-        if(!driver.getCurrentUrl().equals(this.url)){
-            driver.get(this.url);
+        SeleniumWrapper.navigate(driver, url);
+        // if(!driver.getCurrentUrl().equals(this.url)){
+        //     driver.get(this.url);
     }
-   } 
+   
  
    
     public boolean RegisterNewUser (String name,String password,Boolean generateRandomUsername) throws InterruptedException{
@@ -49,11 +51,14 @@ public class RegisterPage {
 
             lastgeneratedUserName= name;
             usernametxt.clear();
-            usernametxt.sendKeys(name);
+            // usernametxt.sendKeys(name);
+            SeleniumWrapper.sendKeys(usernametxt, name);
             passwordtxt1.clear();
-            passwordtxt1.sendKeys(password);
+            //passwordtxt1.sendKeys(password);
+            SeleniumWrapper.sendKeys(passwordtxt1, password);
             passwordtxt2.clear();
-            passwordtxt2.sendKeys(password);
+            //passwordtxt2.sendKeys(password);
+            SeleniumWrapper.sendKeys(passwordtxt2, password);
             registerbtn.click();
 
             Thread.sleep(3000);
@@ -63,9 +68,10 @@ public class RegisterPage {
     public void checkIfUserIsOnLoginPage() {
     if (driver.getCurrentUrl().endsWith("/login")) {
     driver.close();
-            
+            }
     }
-}
 
 }
+
+
 

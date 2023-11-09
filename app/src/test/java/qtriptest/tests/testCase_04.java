@@ -2,6 +2,7 @@ package qtriptest.tests;
 
 import qtriptest.DP;
 import qtriptest.DriverSingleton;
+import qtriptest.ReportSingleton;
 import qtriptest.pages.AdventureDetailsPage;
 import qtriptest.pages.AdventurePage;
 import qtriptest.pages.HistoryPage;
@@ -10,6 +11,7 @@ import qtriptest.pages.LoginPage;
 import qtriptest.pages.RegisterPage;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import com.relevantcodes.extentreports.LogStatus;
 import org.apache.logging.log4j.core.util.Assert;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.AfterSuite;
@@ -36,6 +38,7 @@ public class testCase_04 {
                 // driver = new RemoteWebDriver(new URL("http://localhost:8082/wd/hub"), capabilities);
                 driver=DriverSingleton.getDriverInstance("chrome");
                 logStatus("driver", "Initializing driver", "Success");
+                //ReportSingleton.report= ReportSingleton.getReportInstance();
         
             }
 
@@ -69,6 +72,8 @@ public class testCase_04 {
                 list.add(data2);
                 list.add(data3);
 
+                ReportSingleton.test=ReportSingleton.report.startTest( "Verify booking history can be viewed");
+
                 for(String[] data : list){
 
 
@@ -96,7 +101,9 @@ public class testCase_04 {
                 HistoryPage history= new HistoryPage(driver);
                 history.clickonReservation();
                 Thread.sleep(3000);
+                ReportSingleton.test.log(LogStatus.PASS, ReportSingleton.test.addScreenCapture(ReportSingleton.capture(driver))+" Successfully  verified  booking history");
                 history.GetReservations();
+                ReportSingleton.test.log(LogStatus.FAIL, ReportSingleton.test.addScreenCapture(ReportSingleton.capture(driver))+" Failed to verify booking history");
                 Thread.sleep(3000);
                 home.LogoutUser();
 

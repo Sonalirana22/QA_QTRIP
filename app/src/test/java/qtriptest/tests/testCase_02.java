@@ -1,11 +1,13 @@
-                  package qtriptest.tests;
+package qtriptest.tests;
 
 import qtriptest.DP;
 import qtriptest.DriverSingleton;
+import qtriptest.ReportSingleton;
 import qtriptest.pages.AdventurePage;
 import qtriptest.pages.HomePage;
 import java.net.MalformedURLException;
 import java.net.URL;
+import com.relevantcodes.extentreports.LogStatus;
 import org.apache.logging.log4j.core.util.Assert;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -28,18 +30,20 @@ public class testCase_02 {
 	// Iinitialize webdriver for our Unit Tests
 	@BeforeSuite(alwaysRun = true, enabled = true)
 	public static void createDriver() throws MalformedURLException {
-		logStatus("driver", "Initializing driver", "Started");
-		// final DesiredCapabilities capabilities = new DesiredCapabilities();
-		// capabilities.setBrowserName(BrowserType.CHROME);
-		// driver = new RemoteWebDriver(new URL("http://localhost:8082/wd/hub"), capabilities);
-    driver=DriverSingleton.getDriverInstance("chrome");
-		logStatus("driver", "Initializing driver", "Success");
+      logStatus("driver", "Initializing driver", "Started");
+      // final DesiredCapabilities capabilities = new DesiredCapabilities();
+      // capabilities.setBrowserName(BrowserType.CHROME);
+      // driver = new RemoteWebDriver(new URL("http://localhost:8082/wd/hub"), capabilities);
+      driver=DriverSingleton.getDriverInstance("chrome");
+      logStatus("driver", "Initializing driver", "Success");
+      //ReportSingleton.report= ReportSingleton.getReportInstance();
    
-      }
+   }
 
       @Test(enabled = true, dataProvider = "DatasetsforQTrip", dataProviderClass = DP.class,description = "verify Search and Filter flow" , priority = 2, groups={"Search and Filter flow"})
       public static void TestCase02(String CityName, String CategoryFilter, String DurationFilter,String ExpectedFilteredResults, String ExpectedUnFilteredResults) throws InterruptedException, MalformedURLException{
         
+        ReportSingleton.test=ReportSingleton.report.startTest( "Verify that search and filter Work fine ");
         String CityNotPresent = "Delhi"  ;
         driver.manage().window().maximize();
         Thread.sleep(5000);
@@ -70,9 +74,12 @@ public class testCase_02 {
 
         adventurepage.SetFilterValue(DurationFilter);
         adventurepage.setCategoryValue(CategoryFilter);
-        adventurepage.getResultCount(ExpectedFilteredResults);
-
-      }
+        if(adventurepage.getResultCount(ExpectedFilteredResults)){
+        ReportSingleton.test.log(LogStatus.PASS,ReportSingleton.test.addScreenCapture(ReportSingleton.capture(driver))+ "Succesfully  Verify Search and Filter flow ");
+        }else{
+          ReportSingleton.test.log(LogStatus.FAIL,ReportSingleton.test.addScreenCapture(ReportSingleton.capture(driver))+ "Failed to Verify Search and Filter flow ");
+        }
+    }
 
 
     @AfterSuite

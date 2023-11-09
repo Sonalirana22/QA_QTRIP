@@ -1,5 +1,7 @@
 package qtriptest.pages;
 
+import qtriptest.SeleniumWrapper;
+import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -39,13 +41,15 @@ public class HomePage {
 
     public void navigatetoHomePage(){
         // System.out.println(this.driver.getPageSource());
-        if(!this.driver.getCurrentUrl().equals(this.url)){
-            this.driver.get(this.url);
-        }
+        // if(!this.driver.getCurrentUrl().equals(this.url)){
+        //     this.driver.get(this.url);
+        // }
+        SeleniumWrapper.navigate(driver, url);
     }
 
-    public void ClickRegister(){
-        RegisterBtn.click();
+    public void ClickRegister() throws MalformedURLException{
+        //RegisterBtn.click();
+        SeleniumWrapper.click(RegisterBtn);
 
     }
 
@@ -63,13 +67,15 @@ public class HomePage {
 
     }
 
-    public void searchCity(String city) throws InterruptedException{
+    public void searchCity(String city) throws InterruptedException, MalformedURLException{
 
         SearchBtn.clear();
         Thread.sleep(2000); //Crio Team added
-        SearchBtn.click();
+       // SearchBtn.click();
+       SeleniumWrapper.click(SearchBtn);
         Thread.sleep(2000); //Crio Team added
-        SearchBtn.sendKeys(city);
+        //SearchBtn.sendKeys(city);
+        SeleniumWrapper.sendKeys(SearchBtn, city);
 
     }
      
@@ -96,10 +102,11 @@ public class HomePage {
 
     }
 
-    public boolean SelectCity() throws InterruptedException{  
+    public boolean SelectCity() throws InterruptedException, MalformedURLException{  
         if(CityFound.isDisplayed()){
             Thread.sleep(3000);
-            CityFound.click();
+            //CityFound.click();
+            SeleniumWrapper.click(CityFound);
            }else{
             return false;
            }
@@ -108,8 +115,9 @@ public class HomePage {
 
     }
 
-    public void LogoutUser(){
-        LogOutBtn.click();
+    public void LogoutUser() throws MalformedURLException{
+        //LogOutBtn.click();
+        SeleniumWrapper.click(LogOutBtn);
         
     }
 

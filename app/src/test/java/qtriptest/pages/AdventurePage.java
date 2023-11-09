@@ -1,5 +1,6 @@
 package qtriptest.pages;
 
+import qtriptest.SeleniumWrapper;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -141,9 +142,10 @@ public class AdventurePage {
     }
 
     public void navigatetoAdventurePage() {
-        if (!driver.getCurrentUrl().equals(this.Url)) {
-            driver.get(this.Url);
-        }
+        // if (!driver.getCurrentUrl().equals(this.Url)) {
+        //     driver.get(this.Url);
+        // }
+        SeleniumWrapper.navigate(driver, Url);
     }
 
     public void SetFilterValue(String DurationFilter) {
@@ -153,9 +155,11 @@ public class AdventurePage {
     //         System.out.println(adventuresCount.size());
     }
 
-    public boolean getResultCount(String filteredResult) {
-        clear_hours.click();
-        clear_Category.click();
+    public boolean getResultCount(String filteredResult) throws MalformedURLException {
+        //clear_hours.click();
+        SeleniumWrapper.click(clear_hours);
+        //clear_Category.click();
+        SeleniumWrapper.click(clear_Category);
         Integer actualResult = numberOfAdventure.size();
         String result = actualResult.toString();
         return result.equals(filteredResult);
@@ -168,20 +172,23 @@ public class AdventurePage {
         //System.out.println(adventuresCount.size());
     }
 
-    public void ClearFilterValue() {
-        clear_Adventure.click();
+    public void ClearFilterValue() throws MalformedURLException {
+        //clear_Adventure.click();
+        SeleniumWrapper.click(clear_Adventure);
     }
 
     public void searchAdventure(String AdventureName) throws InterruptedException {
 
         Thread.sleep(3000);
-        search_adventure.sendKeys(AdventureName);
+        //search_adventure.sendKeys(AdventureName);
+        SeleniumWrapper.sendKeys(search_adventure, AdventureName);
 
     }
 
-    public void SelectAdventure() {
+    public void SelectAdventure() throws MalformedURLException {
 
-        select_Adventure.click();
+        //select_Adventure.click();
+        SeleniumWrapper.click(select_Adventure);
     }
 }
        

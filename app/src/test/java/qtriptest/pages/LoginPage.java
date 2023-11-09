@@ -1,5 +1,8 @@
 package qtriptest.pages;
 
+import qtriptest.SeleniumWrapper;
+import java.net.MalformedURLException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -20,9 +23,10 @@ public class LoginPage {
     }
 
     public void navigateToLoginPage(){
-        if(!driver.getCurrentUrl().equals(Url)){
-            driver.get(Url);
-        }
+        SeleniumWrapper.navigate(driver, Url);
+        // if(!driver.getCurrentUrl().equals(Url)){
+        //     driver.get(Url);
+        // }
     }
 
         @FindBy (name ="email") 
@@ -40,13 +44,16 @@ public class LoginPage {
         @FindBy (xpath = "//a[text()='Login Here']")
         WebElement Login_here_verify;
 
-    public void PerformLogin(String username, String password) throws InterruptedException
+    public void PerformLogin(String username, String password) throws InterruptedException, MalformedURLException
 {
-     emailtxtbox.sendKeys(username);
+     //emailtxtbox.sendKeys(username);
+     SeleniumWrapper.sendKeys(emailtxtbox, username);
      Thread.sleep(1000);
-     passwordtxtbox.sendKeys(password);
+     //passwordtxtbox.sendKeys(password);
+     SeleniumWrapper.sendKeys(passwordtxtbox, password);
      Thread.sleep(1000);
-     logintoqtripbutton.click();
+     //logintoqtripbutton.click();
+     SeleniumWrapper.click(logintoqtripbutton);
 
 }
 
@@ -58,9 +65,10 @@ public Boolean VerifyUserLoggedIn(){
     }
 }
 
-public void logout() throws InterruptedException{
+public void logout() throws InterruptedException, MalformedURLException{
     Thread.sleep(2000);
-    logoutbutton.click();
+    //logoutbutton.click();
+    SeleniumWrapper.click(logoutbutton);
 }
 
 }

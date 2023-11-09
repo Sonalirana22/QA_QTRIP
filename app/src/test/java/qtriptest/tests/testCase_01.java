@@ -2,11 +2,13 @@ package qtriptest.tests;
 
 import qtriptest.DP;
 import qtriptest.DriverSingleton;
+import qtriptest.ReportSingleton;
 import qtriptest.pages.HomePage;
 import qtriptest.pages.LoginPage;
 import qtriptest.pages.RegisterPage;
 import java.net.MalformedURLException;
 import java.net.URL;
+import com.relevantcodes.extentreports.LogStatus;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -35,12 +37,13 @@ public class testCase_01 {
 		// driver = new RemoteWebDriver(new URL("http://localhost:8082/wd/hub"), capabilities);
 		driver=DriverSingleton.getDriverInstance("chrome");
 		logStatus("driver", "Initializing driver", "Success");
+		ReportSingleton.report= ReportSingleton.getReportInstance();
    
       }
         @Test(enabled = true, dataProvider = "DatasetsforQTrip", dataProviderClass = DP.class,description = "verify Login flow" , priority = 1, groups={"Login Flow"})
-        public static void TestCase01 (String username, String password) throws InterruptedException{
+        public static void TestCase01 (String username, String password) throws InterruptedException, MalformedURLException{
 
-
+            ReportSingleton.test=ReportSingleton.report.startTest( "Verify User Registration Login-Logout");
 			driver.manage().window().maximize();
 		    Thread.sleep(5000);
 
@@ -53,12 +56,19 @@ public class testCase_01 {
 			Assert.assertTrue(register.RegisterNewUser(username, password,true));
 			lastGeneratedUsername = register.lastgeneratedUserName;
 
+			
+
 			LoginPage login = new LoginPage(driver);
 			login.navigateToLoginPage();
 			login.PerformLogin(lastGeneratedUsername, password);
 
-           // Assert.assertTrue(login.VerifyUserLoggedIn());
-		   Thread.sleep(3000);
+           //Assert.assertTrue(login.VerifyUserLoggedIn());
+		   if(login.VerifyUserLoggedIn()){
+		   ReportSingleton.test.log(LogStatus.PASS, ReportSingleton.test.addScreenCapture(ReportSingleton.capture(driver))+ "Sucessfully Login");
+		   }else{
+			ReportSingleton.test.log(LogStatus.FAIL,  ReportSingleton.test.addScreenCapture(ReportSingleton.capture(driver))+" Failed To  Login");
+		   }
+			Thread.sleep(3000);
 		   login.logout();
 		//Assert.assertTrue(login.VerifyUserLoggedIn());
 
